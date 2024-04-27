@@ -1,0 +1,39 @@
+﻿@* This view is for the News page. It uses the NewsViewModel to display data. *@
+@model NewsViewModel
+
+<h1>Welcome to News Page</h1>
+
+@* Check if there is any older news data *@
+@if (Model.Older is not null)
+{
+    @* Create an accordion for displaying the older news items *@
+    <div id="accordion-news">
+        @* Loop through each news item and display its date, title, and description in a collapsible panel *@
+        @foreach (var news in Model.Older)
+        {
+            <h3><b>@news.Date: </b>@news.Title</h3>
+            <div>
+                <p>
+                    @news.Description
+                </p>
+            </div>
+        }
+    </div>
+}
+else
+{
+    @* Display a message if there is no older news data available *@
+    <div class="col-12">
+        <h4>No data returned for news endpoint</h4>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        @* Initialize the accordion with collapsible panels and content-based height *@
+            $("#accordion-news").accordion({
+                collapsible: true,
+                heightStyle: "content"
+            });
+    </script>
+}

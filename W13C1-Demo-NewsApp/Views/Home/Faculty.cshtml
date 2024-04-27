@@ -1,0 +1,47 @@
+@* This view is for the Faculty page. It uses the FacultyViewModel to display data. *@
+@model Project3_Franko_Fister.Models.FacultyViewModel
+
+@{
+    //* Set the title of the page to "Faculty" *//
+    ViewData["Title"] = "Faculty";
+}
+
+<h1>Faculty</h1>
+
+@* Grid for displaying faculty members *@
+<div class="faculty-grid">
+    @* Check if there is any faculty data *@
+    @if (Model?.Faculty?.Faculty != null)
+    {
+        @* Loop through each faculty member and display their information in a card *@
+        foreach (var faculty in Model.Faculty.Faculty)
+        {
+            <div class="faculty-card"
+                title="@faculty.Name, @faculty.Title, @faculty.InterestArea, @faculty.Email, @faculty.Phone">
+                <img src="@faculty.ImagePath" alt="Image of @faculty.Name" />
+                <div class="faculty-info">
+                    <h2>@faculty.Name</h2>
+                    <p>@faculty.Title</p>
+                    <p>@faculty.Email</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        @* Display a message if there is no faculty data available *@
+        <p>No faculty data available.</p>
+    }
+</div>
+
+@section Scripts {
+    @* Include jQuery and jQuery UI libraries *@
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+        @* Initialize tooltips for the faculty cards *@
+                $(".faculty-card").tooltip();
+        });
+    </script>
+}

@@ -1,0 +1,167 @@
+# Directories to ignore
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+.vs/
+.vscode/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+[Bb]uild[Ll]og.*
+packages/
+
+# Visual Studio user-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.ds_store
+*.idea/
+
+# Rider IDE
+.idea/
+
+# User-specific files
+*.sln.docstates
+
+# ReShaper / Rider
+_ReSharper*/
+*.DotSettings.user
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# NPM
+node_modules/
+
+# Publish output
+publish/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored if you are restoring packages during the build
+# packages/
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+
+# Build Results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+
+# BenchmarkDotNet Artifacts
+BenchmarkDotNet.Artifacts/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# StyleCop
+StyleCopReport.xml
+
+# Files built by Visual Studio
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*.log
+*.vspscc
+*.vssscc
+*.user
+*.mstest
+*.cache
+*.csproj.csdat
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.map
+*.mdf
+*.ldf
+*.backup
+*.bak
+*.cd
+*.cdx
+*.mdx
+*.sql
+*.sqlproj.user
+*.dtsx
+*.pfx
+*.publishsettings
+# Microsoft Azure Emulator
+ecsdeployment.xml
+*.rd
+*.svclog
+
+# Microsoft SQL Server files
+*.mdf
+*.ldf
+
+# SQLite database files
+*.db
+*.db3
+*.sqlite
+*.sqlite3
+
+# TFS 2012 Local Workspace
+$tf/
+
+# Guidance Automation Toolkit
+*.gpState
+
+# Windows shortcut files
+*.lnk
+
+# =========================
+# Windows detritus
+# =========================
+
+# Windows Thumbnail Cache
+Thumbs.db
+ehthumbs.db
+
+# Dump Files
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac desktop service store files
+.DS_Store
+
+# Visual Studio Code - this is personal preference
+.vscode/

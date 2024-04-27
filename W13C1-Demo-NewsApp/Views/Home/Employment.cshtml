@@ -1,0 +1,151 @@
+@* This view is for the Employment page. It uses the EmploymentViewModel to display data. *@
+@model Project3_Franko_Fister.Models.EmploymentViewModel
+
+@{
+    //* Set the title of the page to "Employment Data" *//
+    ViewData["Title"] = "Employment Data";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    @* Set the meta data and include the necessary scripts and styles *@
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employment Data Display</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    @* Navigation buttons for different sections of the page *@
+    <div id="nav">
+        <button class="nav-btn active" data-target="#introSection">Introduction</button>
+        <button class="nav-btn" data-target="#degreeSection">Degree Statistics</button>
+        <button class="nav-btn" data-target="#employersSection">Employers</button>
+        <button class="nav-btn" data-target="#careersSection">Careers</button>
+        <button class="nav-btn" data-target="#coopSection">Co-op Table</button>
+        <button class="nav-btn" data-target="#employmentTableSection">Professional Employment Table</button>
+    </div>
+
+    @* Different sections of the page for displaying employment data *@
+    <div id="employmentData">
+        <div id="introSection" class="section active">
+            <h1 id="introTitle"></h1>
+            <div id="introContent"></div>
+        </div>
+        <div id="degreeSection" class="section">
+            <h2>Degree Statistics</h2>
+            <ul id="statistics"></ul>
+        </div>
+        <div id="employersSection" class="section">
+            <h2>Employers</h2>
+            <ul id="employerList"></ul>
+        </div>
+        <div id="careersSection" class="section">
+            <h2>Careers</h2>
+            <ul id="careerList"></ul>
+        </div>
+        <div id="coopSection" class="section">
+            <h2>Co-op Table</h2>
+            <ul id="coopInfo"></ul>
+            <ul class="pagination" id="coopPagination"></ul>
+        </div>
+        <div id="employmentTableSection" class="section">
+            <h2>Professional Employment Table</h2>
+            <ul id="employmentTable"></ul>
+            <ul class="pagination" id="employmentPagination"></ul>
+        </div>
+    </div>
+
+    <script>
+        @* Script for handling navigation button clicks and fetching/displaying employment data *@
+            $(document).ready(function () {
+        @* Handle navigation button clicks *@
+                    $('.nav-btn').click(function () {
+                        $('.nav-btn').removeClass('active');
+                        $(this).addClass('active');
+                        $('.section').hide();
+                        $($(this).data('target')).show();
+                    });
+
+        @* Function for paginating items *@
+                    function paginateItems(items, containerId, paginationId, itemsPerPage = 30) {
+                        let pagination = $('#' + paginationId);
+                        pagination.empty(); // Clear existing pagination
+
+                        let totalItems = items.length;
+                        let totalPages = Math.ceil(totalItems / itemsPerPage);
+
+                        for (let i = 0; i < totalPages; i++) {
+                            let pageItem = $('<li>').addClass('page-item').text(i + 1).on('click', function () {
+                                $(this).siblings().removeClass('active');
+                                $(this).addClass('active');
+                                let start = i * itemsPerPage;
+                                let end = start + itemsPerPage;
+                                $(containerId).empty();
+                                items.slice(start, end).forEach(item => $(containerId).append(item));
+                            });
+                            if (i === 0) pageItem.addClass('active'); // First page is active by default
+                            pagination.append(pageItem);
+                        }
+
+                        // Display the first page
+                        items.slice(0, itemsPerPage).forEach(item => $(containerId).append(item));
+                    }
+
+        @* Function for fetching employment data from the API *@
+                    function fetchEmploymentData() {
+                        $.ajax({
+                            url: 'https://people.rit.edu/~dsbics/proxy/https://ischool.gccis.rit.edu/api/employment', // Adjust the API URL
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (data) {
+                                updateEmploymentUI(data);
+                            },
+                            error: function (error) {
+                                console.log('Error fetching data:', error);
+                            }
+                        });
+                    }
+
+        @* Function for updating the UI with the fetched employment data *@
+                    function updateEmploymentUI(data) {
+                        // Update introduction section
+                        $('#introTitle').text(data.introduction.title);
+                        $.each(data.introduction.content, function (i, item) {
+                            $('#introContent').append('<h3>' + item.title + '</h3><p>' + item.description + '</p>');
+                        });
+
+                        // Update degree statistics
+                        $.each(data.degreeStatistics.statistics, function (i, stat) {
+                            $('#statistics').append('<li>' + stat.description + ': ' + stat.value + '</li>');
+                        });
+
+                        // Update employers list
+                        $.each(data.employers.employerNames, function (i, employer) {
+                            $('#employerList').append('<li>' + employer + '</li>');
+                        });
+
+                        // Update careers list
+                        $.each(data.careers.careerNames, function (i, career) {
+                            $('#careerList').append('<li>' + career + '</li>');
+                        });
+
+                        // Update co-op table and paginate
+                        let coopItems = data.coopTable.coopInformation.map(coop => $('<li>').text(coop.employer + ' - ' + coop.degree + ' - ' + coop.city + ' (' + coop.term + ')'));
+                        paginateItems(coopItems, '#coopInfo', 'coopPagination');
+
+                        // Update employment table and paginate
+                        let employmentItems = data.employmentTable.professionalEmploymentInformation.map(emp => $('<li>').text(emp.employer + ' - ' + emp.degree + ' - ' + emp.city + ' - ' + emp.title + ' (' + (emp.startDate ? emp.startDate.substring(0, 10) : 'N/A') + ')'));
+                        paginateItems(employmentItems, '#employmentTable', 'employmentPagination');
+                    }
+
+        @* Fetch the employment data *@
+                    fetchEmploymentData();
+            });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+@* This view is for the Degrees page. It uses the DegreesViewModel to display data. *@
+@model Project3_Franko_Fister.Models.DegreesViewModel
+
+@{
+    //* Set the title of the page to "Degree Programs" *//
+    ViewData["Title"] = "Degree Programs";
+}
+
+@* Include the jQuery UI CSS for the tabs *@
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+@* Create tabs for Undergraduate and Graduate degrees *@
+<div id="tabs">
+    <ul>
+        <li><a href="#tabs-1">Undergraduate</a></li>
+        <li><a href="#tabs-2">Graduate</a></li>
+    </ul>
+    <div id="tabs-1">
+        @* Display the Undergraduate degrees *@
+        @if (Model?.Degrees?.Undergraduate != null)
+        {
+            foreach (var degree in Model.Degrees.Undergraduate)
+            {
+                <div>
+                    <h3 class="degree-name">@degree.DegreeName</h3>
+                    <p><strong>Title:</strong> @degree.Title</p>
+                    <p><strong>Description:</strong> @degree.Description</p>
+                    <p><strong>Concentrations:</strong></p>
+                    @* Display the concentrations for each degree, if any *@
+                    @if (degree.Concentrations != null && degree.Concentrations.Any())
+                    {
+                        <ul>
+                            @foreach (var concentration in degree.Concentrations)
+                            {
+                                <li class="tabs-li">@concentration</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No concentrations listed.</p>
+                    }
+                </div>
+            }
+        }
+    </div>
+    <div id="tabs-2">
+        @* Display the Graduate degrees *@
+        @if (Model?.Degrees?.Graduate != null)
+        {
+            foreach (var degree in Model.Degrees.Graduate)
+            {
+                <div>
+                    <h3 class="degree-name">@degree.DegreeName</h3>
+                    <p>@degree.Title</p>
+                    <p><strong>Description:</strong> @degree.Description</p>
+                    @* Display the concentrations or certificates for each degree, if any *@
+                    @if (degree.Concentrations != null && degree.Concentrations.Any())
+                    {
+                        <ul>
+                            @foreach (var concentration in degree.Concentrations)
+                            {
+                                <li class="tabs-li">@concentration</li>
+                            }
+                        </ul>
+                    }
+                    else if (degree.AvailableCertificates != null && degree.AvailableCertificates.Any())
+                    {
+                        <ul>
+                            @foreach (var certificate in degree.AvailableCertificates)
+                            {
+                                <li class="tabs-li">@certificate</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>No concentrations or certificates listed.</p>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @* Include jQuery and jQuery UI libraries *@
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+        @* Initialize the tabs *@
+                $("#tabs").tabs();
+        });
+    </script>
+}

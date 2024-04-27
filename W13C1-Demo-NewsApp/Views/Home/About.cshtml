@@ -1,0 +1,48 @@
+@* This view is for the About page. It uses the AboutModel to display data. *@
+@model Project3_Franko_Fister.Models.AboutModel
+
+@{
+    //* Set the title of the page to "About" *//
+    ViewData["Title"] = "About";
+}
+
+@* Display the title and description from the model *@
+<h1>@Model.Title</h1>
+<p class="about-description">@Model.Description</p>
+
+@* Button to open a dialog box displaying a quote *@
+<button id="open-quote">Show Quote</button>
+
+@* Dialog box for displaying the quote. Initially hidden with display: none; *@
+<div id="quote-dialog" title="Quote from @Model.QuoteAuthor" style="display: none;">
+    <p>@Model.Quote</p>
+</div>
+
+@section Scripts {
+    @* Include jQuery and jQuery UI libraries *@
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+        @* Initialize the dialog box with certain properties *@
+                $("#quote-dialog").dialog({
+                    autoOpen: false,
+                    width: $(window).width() > 500 ? 500 : '80%', // Set the width to 80% of the window width if it's less than 500px
+                    height: 300,
+                    show: {
+                        effect: "blind",
+                        duration: 1000
+                    },
+                    hide: {
+                        effect: "explode",
+                        duration: 1000
+                    }
+                });
+
+        @* Set up a click event handler for the "open-quote" button to open the dialog box *@
+                $("#open-quote").on("click", function () {
+                    $("#quote-dialog").dialog("open");
+                });
+        });
+    </script>
+}
